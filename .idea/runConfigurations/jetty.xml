@@ -1,0 +1,16 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="jetty" type="JettyRunner-By-GuiKeller" factoryName="Jetty Runner">
+    <option name="JettyRunnerV130-SelectedModuleName" value="mBlog" />
+    <option name="JettyRunnerV130-WebAppPath" value="/mBlog" />
+    <option name="JettyRunnerV130-WebAppFolder" value="$PROJECT_DIR$/src/main/webapp" />
+    <option name="JettyRunnerV130-ClassesDirectory" value="$PROJECT_DIR$/target/classes" />
+    <option name="JettyRunnerV130-RunOnPort" value="8080" />
+    <option name="JettyRunnerV130-JettyRunnerPath" value="$USER_HOME$/Downloads/jetty-runner-9.0.0.M4.jar" />
+    <option name="JettyRunnerV130-JettyXML" value="" />
+    <option name="JettyRunnerV130-VmArgs" value="-Dname=&quot;alanWinston&quot;" />
+    <option name="JettyRunnerV130-PassParentEnvVars" value="true" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
