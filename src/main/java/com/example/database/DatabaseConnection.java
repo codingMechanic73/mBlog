@@ -4,6 +4,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+/**
+ * Singleton class which givens connection object
+ */
 public class DatabaseConnection {
     private static Connection con;
 
@@ -14,6 +17,8 @@ public class DatabaseConnection {
 
         if (con == null) {
 
+            // heroku provides an easier way to access driver, url, user, password
+            // from the environment variables
             Class.forName(System.getenv("driver"));
             Connection con = DriverManager.getConnection(
                     System.getenv("url"),
