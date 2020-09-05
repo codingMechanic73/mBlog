@@ -15,7 +15,7 @@
     <div class="container" style="margin-top: 100px;">
         <div class="row justify-content-center">
             <div class="col-10 col-sm-8 col-md-6 col-lg-4 .col-xl-4">
-                <form action="#" method="POST">
+                <form action="/user" method="POST">
                     <div class="form-group">
                         <label for="exampleInputEmail1">Email address</label>
                         <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="email" placeholder="email" required>
@@ -27,13 +27,13 @@
                     </div>
                     <div class="form-group">
                         <div class="form-group">
-                            <input type="submit" class="btn btn-primary btn-lg btn-block" value="Sign In" />
+                            <input type="submit" class="btn btn-primary btn-lg btn-block" value="Sign In" name="button" />
                         </div>
                     </div>
                 </form>
                 <%
-                    String errorMsg = "";
-                    if (errorMsg.length() != 0) {
+                    String errorMsg = (String) request.getAttribute("errorMsg");
+                    if (errorMsg != null) {
                 %>
                 <div class="alert alert-warning" role="alert" style="margin-top: 25px;">
                     <%=errorMsg %>

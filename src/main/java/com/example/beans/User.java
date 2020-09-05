@@ -3,8 +3,13 @@ package com.example.beans;
 public class User {
 
     private int id;
-    private String emailId;
+    private String email;
     private String password;
+
+    public User(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
 
     public int getId() {
         return id;
@@ -14,12 +19,12 @@ public class User {
         this.id = id;
     }
 
-    public String getEmailId() {
-        return emailId;
+    public String getEmail() {
+        return email;
     }
 
-    public void setEmailId(String emailId) {
-        this.emailId = emailId;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {
