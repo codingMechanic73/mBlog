@@ -9,6 +9,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign In or Sign Up</title>
 </head>
+<%
+    String email = (String)session.getAttribute("email");
+    if (email != null) {
+        response.sendRedirect("/Home.jsp");
+    }
+%>
 
 <body>
 
