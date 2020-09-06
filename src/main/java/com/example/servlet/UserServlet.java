@@ -1,7 +1,6 @@
 package com.example.servlet;
 
 import com.example.beans.User;
-import com.example.services.ServiceFactory;
 import com.example.services.ServiceFactoryImpl;
 import com.example.services.UserService;
 
@@ -20,18 +19,7 @@ public class UserServlet extends HttpServlet {
 
     @Override
     public void init() {
-        ServiceFactory serviceFactory = new ServiceFactoryImpl();
-        userService = serviceFactory.getUserService();
-    }
-
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        HttpSession session = req.getSession();
-        if (session.getAttribute("email") == null) {
-            resp.sendRedirect("/index.jsp");
-        } else {
-            resp.sendRedirect("/Home.jsp");
-        }
+        userService = ServiceFactoryImpl.getInstance().getUserService();
     }
 
     @Override
@@ -51,7 +39,7 @@ public class UserServlet extends HttpServlet {
 
                 if (user.getEmail().equals(email)) {
                     session.setAttribute("email", email);
-                    req.getRequestDispatcher("/Home.jsp").forward(req, resp);
+                    resp.sendRedirect("/Home.jsp");
                 } else {
                     req.setAttribute("errorMsg", "Invalid credentials!");
                     req.getRequestDispatcher("/index.jsp").forward(req, resp);
@@ -63,7 +51,7 @@ public class UserServlet extends HttpServlet {
 
                 if (user.getEmail().equals(email)) {
                     session.setAttribute("email", email);
-                    req.getRequestDispatcher("/Home.jsp").forward(req, resp);
+                    resp.sendRedirect("/Home.jsp");
                 } else {
                     req.setAttribute("errorMsg", "User already exists!");
                     req.getRequestDispatcher("/index.jsp").forward(req, resp);
