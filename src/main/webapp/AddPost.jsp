@@ -32,7 +32,7 @@
                 <form action="/post" method="POST">
                     <div class="form-group">
                         <label for="exampleFormControlInput1">Title</label>
-                        <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Title">
+                        <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Title" name="title">
                     </div>
 
                     <div class="form-group">
@@ -47,6 +47,16 @@
 
                     <input type="submit" class="btn btn-primary btn-lg btn-block" value="Post" />
                 </form>
+                <%
+                    String errorMsg = (String) request.getAttribute("errorMsg");
+                    if (errorMsg != null) {
+                %>
+                <div class="alert alert-warning" role="alert" style="margin-top: 25px;">
+                    <%=errorMsg %>
+                </div>
+                <%
+                }
+                %>
             </div>
         </div>
     </div>

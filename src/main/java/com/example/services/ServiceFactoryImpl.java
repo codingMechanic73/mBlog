@@ -3,6 +3,7 @@ package com.example.services;
 public class ServiceFactoryImpl implements ServiceFactory {
     private static UserService userService;
     private static ServiceFactory serviceFactory;
+    private static PostService postService;
 
     private ServiceFactoryImpl() {
     }
@@ -21,5 +22,14 @@ public class ServiceFactoryImpl implements ServiceFactory {
         }
         return userService;
     }
+
+    @Override
+    public PostService getPostService() {
+        if (postService == null) {
+            postService = PostServiceImpl.getInstance();
+        }
+        return postService;
+    }
+
 
 }

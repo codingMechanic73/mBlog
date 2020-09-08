@@ -5,6 +5,8 @@ import com.example.Dao.DaoFactoryImpl;
 import com.example.Dao.UserDao;
 import com.example.beans.User;
 
+import java.sql.SQLException;
+
 public class UserServiceImpl implements UserService {
 
     private static UserDao userDao;
@@ -16,9 +18,8 @@ public class UserServiceImpl implements UserService {
 
 
     public static UserService getInstance() {
-        DaoFactory daoFactory = new DaoFactoryImpl();
         if (userDao == null) {
-            userDao = daoFactory.getUserDao();
+            userDao = DaoFactoryImpl.getInstance().getUserDao();
             userService = new UserServiceImpl();
         }
         return userService;
@@ -26,11 +27,21 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User createUser(User user) {
-        return userDao.createUser(user);
+        try {
+            return userDao.createUser(user);
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
     public User getUser(User user) {
-        return userDao.getUserByEmail(user.getEmail());
+        try {
+            return userDao.getUserByEmail(user.getEmail());
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

@@ -27,6 +27,17 @@
 <body>
     <jsp:include page="/Nav.jsp"/>
 
+     <div class="container" style="margin-top: 50px;">
+        <div class="row justify-content-center">
+            <div class="col-10 col-sm-12 col-md-8 col-lg-8 .col-xl-8">
+                <form action="/postUtil" method="POST" class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="searchEmail">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit" name="button" value="search">Search</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <jsp:include page="/View.jsp"/>
 
 </body>

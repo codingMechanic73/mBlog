@@ -20,7 +20,7 @@
             </ul>
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Search <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="/Filter.jsp">Search <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/AddPost.jsp">Add Post <span class="sr-only">(current)</span></a>

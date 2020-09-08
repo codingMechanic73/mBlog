@@ -1,4 +1,4 @@
-package com.example.servlet;
+package com.example.servlets;
 
 import com.example.beans.User;
 import com.example.services.ServiceFactoryImpl;

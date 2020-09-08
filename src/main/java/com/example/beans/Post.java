@@ -1,17 +1,26 @@
 package com.example.beans;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 public class Post {
 
     private int postId;
     private String postBy;
     private String title;
-    private List<String> tags;
+    private String tag;
     private String description;
     private LocalDateTime timestamp;
 
+    public Post() {
+    }
+
+    public Post(String postBy, String title, String tag, String description, LocalDateTime timestamp) {
+        this.postBy = postBy;
+        this.title = title;
+        this.tag = tag;
+        this.description = description;
+        this.timestamp = timestamp;
+    }
 
     public int getPostId() {
         return postId;
@@ -37,12 +46,12 @@ public class Post {
         this.title = title;
     }
 
-    public List<String> getTags() {
-        return tags;
+    public String getTags() {
+        return tag;
     }
 
-    public void setTags(List<String> tags) {
-        this.tags = tags;
+    public void setTag(String tag) {
+        this.tag = tag;
     }
 
     public String getDescription() {
