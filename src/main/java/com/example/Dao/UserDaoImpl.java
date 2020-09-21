@@ -28,7 +28,7 @@ public class UserDaoImpl implements UserDao {
     public List<User> getAllUser() throws SQLException, ClassNotFoundException {
         Connection connection = DatabaseConnection.getInstance().getConnection();
         Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery("select userName, email, password from user");
+        ResultSet resultSet = statement.executeQuery("select userName, email, password from mblog.user");
         List<User> users = new ArrayList<>();
         while (resultSet.next()) {
             User user = new User(resultSet.getString("userName"), resultSet.getString("email"), resultSet.getString("password"));
