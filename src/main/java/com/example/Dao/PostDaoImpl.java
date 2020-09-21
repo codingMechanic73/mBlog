@@ -31,7 +31,7 @@ public class PostDaoImpl implements PostDao {
     public Post getPostByTag(String tag) throws SQLException, ClassNotFoundException {
         Connection connection = DatabaseConnection.getInstance().getConnection();
         Statement statement = connection.createStatement();
-        String query = "SELECT postId, postBy, title, tag, description, timestamp from Posts where tag = \"" + tag + "\";";
+        String query = "SELECT postId, postBy, title, tag, description, timestamp from mblog.Post where tag = \"" + tag + "\";";
         ResultSet rs = statement.executeQuery(query);
         Post post = null;
         while (rs.next()) {
@@ -49,7 +49,7 @@ public class PostDaoImpl implements PostDao {
     @Override
     public int savePost(Post post) throws SQLException, ClassNotFoundException {
         Connection connection = DatabaseConnection.getInstance().getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO post(title, tag, description, timestamp, userName, imgUrl) values(?, ?, ?, ?, ?, ?)");
+        PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO mblog.Post(title, tag, description, timestamp, userName, imgUrl) values(?, ?, ?, ?, ?, ?)");
         preparedStatement.setString(1, post.getTitle());
         preparedStatement.setString(2, post.getTag());
         preparedStatement.setString(3, post.getDescription());
@@ -62,7 +62,7 @@ public class PostDaoImpl implements PostDao {
     @Override
     public List<Post> getAllPost() throws SQLException, ClassNotFoundException {
         List<Post> posts = new ArrayList<>();
-        String query = "SELECT title, tag, description, imgUrl, userName, postId, timestamp from post";
+        String query = "SELECT title, tag, description, imgUrl, userName, postId, timestamp from mblog.Post";
         Connection con = DatabaseConnection.getInstance().getConnection();
         Statement statement = con.createStatement();
         ResultSet rs = statement.executeQuery(query);

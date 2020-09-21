@@ -25,16 +25,16 @@ public class DatabaseConnection {
 
             // heroku provides an easier way to access driver, url, user, password
             // from the environment variables
-//            Class.forName(System.getenv("driver"));
-//            Connection con = DriverManager.getConnection(
-//                    System.getenv("url"),
-//                    System.getenv("user"),
-//                    System.getenv("password"));
-//            System.out.println(con);
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mblog", "root", "H@cks@lt1");
+            Class.forName(System.getenv("driver"));
+            con = DriverManager.getConnection(
+                    System.getenv("url"),
+                    System.getenv("user"),
+                    System.getenv("password"));
             System.out.println(con);
-            return con;
+//            Class.forName("com.mysql.cj.jdbc.Driver");
+//            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/student_management_database", "root", "root");
+//            System.out.println(con);
+            //  return con;
 
         }
         return con;

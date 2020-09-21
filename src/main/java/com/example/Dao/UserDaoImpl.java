@@ -40,7 +40,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public int createUser(User user) throws SQLException, ClassNotFoundException {
         Connection connection = DatabaseConnection.getInstance().getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO user(email, password, userName) values(?, ?, ?)");
+        PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO mblog.user(email, password, userName) values(?, ?, ?)");
         preparedStatement.setString(1, user.getEmail());
         preparedStatement.setString(2, user.getPassword());
         preparedStatement.setString(3, user.getUserName());
