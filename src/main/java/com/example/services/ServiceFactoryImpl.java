@@ -1,5 +1,7 @@
 package com.example.services;
 
+import java.sql.SQLException;
+
 public class ServiceFactoryImpl implements ServiceFactory {
     private static UserService userService;
     private static ServiceFactory serviceFactory;
@@ -24,7 +26,7 @@ public class ServiceFactoryImpl implements ServiceFactory {
     }
 
     @Override
-    public PostService getPostService() {
+    public PostService getPostService() throws SQLException, ClassNotFoundException {
         if (postService == null) {
             postService = PostServiceImpl.getInstance();
         }

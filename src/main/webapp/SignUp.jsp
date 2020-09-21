@@ -8,14 +8,14 @@
     response.setDateHeader("Expires", 0);
 
     String userName = (String)session.getAttribute("userName");
-    if (userName == null) {
-        response.sendRedirect("/index.jsp");
+    if (userName != null) {
+        response.sendRedirect("/Home.jsp");
     }
 %>
 
 <!DOCTYPE html>
-
 <html lang="en">
+
 <head>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
         integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
@@ -24,29 +24,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign In or Sign Up</title>
 </head>
+
 <body>
-    <jsp:include page="Nav.jsp"/>
 
-    <div class="container" style="margin-top: 50px">
+    <jsp:include page="/NavLogin.jsp"/>
+
+    <div class="container" >
         <div class="row justify-content-center">
-            <div class="col-10 col-sm-8 col-md-6 col-lg-5 .col-xl-4">
-                <form action="/post" method="POST">
+            <div class="col-10 col-sm-8 col-md-6 col-lg-4 .col-xl-4">
+                <form action="/user" method="POST">
                     <div class="form-group">
-                        <label for="exampleFormControlInput1">Title</label>
-                        <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Title" name="title" maxlength="50" minlength="5">
+                        <label for="userName">User Name</label>
+                        <input type="text" class="form-control" name="userName" placeholder="UserName" minlength="6" maxlength="30" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email address</label>
+                        <input type="email" class="form-control" name="email" placeholder="email" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="exampleFormControlTextarea1">Description</label>
-                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="6" name="description" maxlength="1000" minlength="15"></textarea>
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control" name="password" placeholder="**********" required minlength="8" maxlength="15">
+                    </div> <div class="form-group">
+                        <label for="passwordrepeat">Repeat Password</label>
+                        <input type="passwordrepeat" class="form-control" name="passwordrepeat" placeholder="**********" required minlength="8" maxlength="15">
                     </div>
                     <div class="form-group">
-                        <label for="exampleFormControlInput1">Tags</label>
-                        <input type="text" class="form-control" id="exampleFormControlInput1"
-                            placeholder="java, cloud technology" name="tag" maxlength = "20" >
+                        <div class="form-group">
+                            <input type="submit" class="btn btn-primary btn-lg btn-block" name="button" value="Sign Up" />
+                        </div>
                     </div>
-
-                    <input type="submit" class="btn btn-primary btn-lg btn-block" value="Post" />
                 </form>
                 <%
                     String errorMsg = (String) request.getAttribute("errorMsg");
@@ -61,5 +68,7 @@
             </div>
         </div>
     </div>
+
 </body>
+
 </html>

@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 @WebServlet("/postUtil")
@@ -19,7 +20,13 @@ public class PostUtil extends HttpServlet {
     PostService postService;
     @Override
     public void init() throws ServletException {
-        postService = ServiceFactoryImpl.getInstance().getPostService();
+        try {
+            postService = ServiceFactoryImpl.getInstance().getPostService();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -33,10 +40,10 @@ public class PostUtil extends HttpServlet {
             switch (button) {
                 case "button":
                     String searchEmail = (String) req.getAttribute("searchEmail");
-                    List<Post> posts = postService.getPostsByEmailId(searchEmail);
+                    List<Post> posts = postService.getPostByUserName(searchEmail);
                     req.setAttribute("posts", posts);
                     req.setAttribute("from", "filter");
-                    req.getRequestDispatcher("/Filter.jsp").forward(req, resp);
+                    req.getRequestDispatcher("/Search.jsp").forward(req, resp);
                     break;
             }
         }

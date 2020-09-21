@@ -1,12 +1,8 @@
 <%
-    String userName = "";
-    String email = (String)session.getAttribute("email");
-    if (email != null) {
-        userName = email.substring(0, email.indexOf("@"));
-    }
+    String userName = (String)session.getAttribute("userName");
 %>
 
-<div class="container">
+<div style="margin-bottom: 50px">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="/Home.jsp">Home</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -20,7 +16,10 @@
             </ul>
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="/Filter.jsp">Search <span class="sr-only">(current)</span></a>
+                    <form class="form-inline my-2 my-lg-0" action="/Search.jsp" method="POST">
+                        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                    </form>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/AddPost.jsp">Add Post <span class="sr-only">(current)</span></a>

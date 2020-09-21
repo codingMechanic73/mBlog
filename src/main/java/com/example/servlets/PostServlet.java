@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 
 @WebServlet(value = "/post")
@@ -20,17 +21,26 @@ public class PostServlet extends HttpServlet {
 
     @Override
     public void init() {
-        postService = ServiceFactoryImpl.getInstance().getPostService();
+        try {
+            postService = ServiceFactoryImpl.getInstance().getPostService();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
-        String email = (String) session.getAttribute("email");
-        if (email == null) {
+        String userName = (String) session.getAttribute("userName");
+        if (userName == null) {
             resp.sendRedirect("/index.jsp");
         } else {
-            Post post = new Post(email,
+            Post post = new Post(
+                    1,
+                    null,
+                    userName,
                     req.getParameter("title"),
                     req.getParameter("tag"),
                     req.getParameter("description"),

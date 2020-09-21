@@ -23,40 +23,13 @@ public class PostDaoImpl implements PostDao {
     }
 
     @Override
-    public List<Post> getPostsByEmailId(String email) throws SQLException, ClassNotFoundException {
-//        Connection connection = DatabaseConnection.getConnection();
-//        Statement statement = connection.createStatement();
-//        String query = "SELECT postId, postBy, title, tag, description, timestamp from Posts where email = \"" + email + "\";";
-//        ResultSet rs = statement.executeQuery(query);
-//        List<Post> posts = new ArrayList<>();
-//        while (rs.next()) {
-//            Post post = new Post();
-//            post.setPostId(rs.getInt("postId"));
-//            post.setPostBy(rs.getString("postBy"));
-//            post.setTitle(rs.getString("title"));
-//            post.setTag(rs.getString("tag"));
-//            post.setDescription(rs.getString("description"));
-//            post.setTimestamp(LocalDateTime.now());
-//            posts.add(post);
-//        }
-//        return posts;
-        List<Post> posts = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            Post post = new Post();
-            post.setPostId(1);
-            post.setPostBy("hi");
-            post.setTitle("title");
-            post.setTag("tag");
-            post.setDescription("This is a description");
-            post.setTimestamp(LocalDateTime.now());
-            posts.add(post);
-        }
-        return posts;
+    public List<Post> getPostsByEmailId(String userName) throws SQLException, ClassNotFoundException {
+        return new ArrayList<>();
     }
 
     @Override
     public Post getPostByTag(String tag) throws SQLException, ClassNotFoundException {
-        Connection connection = DatabaseConnection.getConnection();
+        Connection connection = DatabaseConnection.getInstance().getConnection();
         Statement statement = connection.createStatement();
         String query = "SELECT postId, postBy, title, tag, description, timestamp from Posts where tag = \"" + tag + "\";";
         ResultSet rs = statement.executeQuery(query);
@@ -64,7 +37,7 @@ public class PostDaoImpl implements PostDao {
         while (rs.next()) {
             post = new Post();
             post.setPostId(rs.getInt("postId"));
-            post.setPostBy(rs.getString("postBy"));
+            post.setUserName(rs.getString("postBy"));
             post.setTitle(rs.getString("title"));
             post.setTag(rs.getString("tag"));
             post.setDescription(rs.getString("description"));
@@ -75,15 +48,28 @@ public class PostDaoImpl implements PostDao {
 
     @Override
     public int savePost(Post post) throws SQLException, ClassNotFoundException {
-//        Connection connection = DatabaseConnection.getConnection();
-//        PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO Posts values(?, ?, ?, ?, ?)");
-//        preparedStatement.setInt(1, post.getPostId());
-//        preparedStatement.setString(2, post.getPostBy());
-//        preparedStatement.setString(3, post.getTitle());
-//        preparedStatement.setString(4, post.getTags());
-//        preparedStatement.setString(5, post.getDescription());
-//        preparedStatement.setString(6, post.getTimestamp().toString());
-//        return preparedStatement.executeUpdate();
-        return 1;
+        Connection connection = DatabaseConnection.getInstance().getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO post(title, tag, description, timestamp, userName, imgUrl) values(?, ?, ?, ?, ?, ?)");
+        preparedStatement.setString(1, post.getTitle());
+        preparedStatement.setString(2, post.getTag());
+        preparedStatement.setString(3, post.getDescription());
+        preparedStatement.setString(4, "fiej");
+        preparedStatement.setString(5, post.getUserName());
+        preparedStatement.setString(6, post.getImgUrl());
+        return preparedStatement.executeUpdate();
+    }
+
+    @Override
+    public List<Post> getAllPost() throws SQLException, ClassNotFoundException {
+        List<Post> posts = new ArrayList<>();
+        String query = "SELECT title, tag, description, imgUrl, userName, postId, timestamp from post";
+        Connection con = DatabaseConnection.getInstance().getConnection();
+        Statement statement = con.createStatement();
+        ResultSet rs = statement.executeQuery(query);
+        while (rs.next()) {
+            Post post = new Post(rs.getInt("postId"),rs.getString("imgUrl"),rs.getString("userName"), rs.getString("title"), rs.getString("tag"), rs.getString("description"), LocalDateTime.now());
+            posts.add(post);
+        }
+        return posts;
     }
 }

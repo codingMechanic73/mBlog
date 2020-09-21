@@ -5,9 +5,11 @@ import com.example.beans.Post;
 import java.util.List;
 
 public interface PostService {
-    List<Post> getPostsByEmailId(String email);
+    List<Post> getAllPost();
 
-    Post getPostByTag(String tag);
+    List<Post> getPostByUserName(String userName);
+
+    List<Post> getPostBasedOnSearch(String str);
 
     boolean savePost(Post post);
 

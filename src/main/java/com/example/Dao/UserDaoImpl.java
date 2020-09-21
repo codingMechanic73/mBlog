@@ -3,16 +3,18 @@ package com.example.Dao;
 import com.example.beans.User;
 import com.example.database.DatabaseConnection;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDaoImpl implements UserDao {
 
-    static UserDao userDao;
+    private static UserDao userDao;
+
+    private static List<User> users;
 
     private UserDaoImpl() {
+
     }
 
     public static UserDao getInstance() {
@@ -23,28 +25,26 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User createUser(User user) throws SQLException, ClassNotFoundException {
-        Connection connection = DatabaseConnection.getConnection();
+    public List<User> getAllUser() throws SQLException, ClassNotFoundException {
+        Connection connection = DatabaseConnection.getInstance().getConnection();
         Statement statement = connection.createStatement();
-        boolean res = statement.execute("Insert into public.\"User\" values (1, \"alan\", \"winsotn\") ");
-        if (res) {
-            return user;
+        ResultSet resultSet = statement.executeQuery("select userName, email, password from user");
+        List<User> users = new ArrayList<>();
+        while (resultSet.next()) {
+            User user = new User(resultSet.getString("userName"), resultSet.getString("email"), resultSet.getString("password"));
+            users.add(user);
         }
-        return new User();
+        return users;
     }
 
     @Override
-    public User getUserByEmail(String email) throws SQLException, ClassNotFoundException {
-//        Connection connection = DatabaseConnection.getConnection();
-//        Statement statement = connection.createStatement();
-//        ResultSet rs = statement.executeQuery("SELECT user, password FROM public.\"User\" where email=\"" + email + "\";");
-//        while (rs.next()) {
-//            User user = new User(rs.getString("user"), rs.getString("password"));
-//        }
-//        return new User();
-        User user = new User();
-        user.setEmail(email);
-        user.setPassword("1234");
-        return user;
+    public int createUser(User user) throws SQLException, ClassNotFoundException {
+        Connection connection = DatabaseConnection.getInstance().getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO user(email, password, userName) values(?, ?, ?)");
+        preparedStatement.setString(1, user.getEmail());
+        preparedStatement.setString(2, user.getPassword());
+        preparedStatement.setString(3, user.getUserName());
+        return preparedStatement.executeUpdate();
     }
+
 }

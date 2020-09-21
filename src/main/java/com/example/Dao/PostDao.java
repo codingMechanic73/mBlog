@@ -12,4 +12,5 @@ public interface PostDao {
 
     int savePost(Post post) throws SQLException, ClassNotFoundException;
 
+    List<Post> getAllPost() throws SQLException, ClassNotFoundException;
 }

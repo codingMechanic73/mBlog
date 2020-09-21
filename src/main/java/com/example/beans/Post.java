@@ -5,17 +5,21 @@ import java.time.LocalDateTime;
 public class Post {
 
     private int postId;
-    private String postBy;
+    private String imgUrl;
+    private String userName;
     private String title;
     private String tag;
     private String description;
     private LocalDateTime timestamp;
 
     public Post() {
+
     }
 
-    public Post(String postBy, String title, String tag, String description, LocalDateTime timestamp) {
-        this.postBy = postBy;
+    public Post(int postId, String imgUrl, String userName, String title, String tag, String description, LocalDateTime timestamp) {
+        this.postId = postId;
+        this.imgUrl = imgUrl;
+        this.userName = userName;
         this.title = title;
         this.tag = tag;
         this.description = description;
@@ -30,12 +34,20 @@ public class Post {
         this.postId = postId;
     }
 
-    public String getPostBy() {
-        return postBy;
+    public String getImgUrl() {
+        return imgUrl;
     }
 
-    public void setPostBy(String postBy) {
-        this.postBy = postBy;
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getTitle() {
@@ -46,7 +58,7 @@ public class Post {
         this.title = title;
     }
 
-    public String getTags() {
+    public String getTag() {
         return tag;
     }
 
