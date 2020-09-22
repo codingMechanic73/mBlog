@@ -1,10 +1,7 @@
 package com.example.servlets;
 
 import com.example.beans.User;
-import com.example.exceptions.EmailExists;
-import com.example.exceptions.InvalidCredentials;
-import com.example.exceptions.UserDoesntExist;
-import com.example.exceptions.UserNameExists;
+import com.example.exceptions.*;
 import com.example.services.ServiceFactoryImpl;
 import com.example.services.UserService;
 
@@ -58,11 +55,8 @@ public class UserServlet extends HttpServlet {
                         userService.createUser(new User(userName, password, email));
                         session.setAttribute("userName", userName);
                         resp.sendRedirect("/Home.jsp");
-                    } catch (EmailExists e) {
-                        req.setAttribute("errorMsg", "Email already exists!");
-                        req.getRequestDispatcher("/SignUp.jsp").forward(req, resp);
-                    } catch (UserNameExists e) {
-                        req.setAttribute("errorMsg", "User already in use");
+                    } catch (EmailExists | UserNameExists | SomethingWentWrong e) {
+                        req.setAttribute("errorMsg", e.getMessage());
                         req.getRequestDispatcher("/SignUp.jsp").forward(req, resp);
                     }
                 } else {

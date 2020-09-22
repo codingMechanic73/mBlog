@@ -3,10 +3,7 @@ package com.example.services;
 import com.example.Dao.DaoFactoryImpl;
 import com.example.Dao.UserDao;
 import com.example.beans.User;
-import com.example.exceptions.EmailExists;
-import com.example.exceptions.InvalidCredentials;
-import com.example.exceptions.UserDoesntExist;
-import com.example.exceptions.UserNameExists;
+import com.example.exceptions.*;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -18,70 +15,54 @@ public class UserServiceImpl implements UserService {
     private static List<User> users;
 
     private UserServiceImpl() throws SQLException, ClassNotFoundException {
+        userDao = DaoFactoryImpl.getInstance().getUserDao();
         users = userDao.getAllUser();
     }
 
 
-    public static UserService getInstance() {
-        if (userDao == null) {
-            userDao = DaoFactoryImpl.getInstance().getUserDao();
-
+    public static UserService getInstance() throws SomethingWentWrong {
+        if (userService == null) {
             try {
                 userService = new UserServiceImpl();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
+            } catch (SQLException | ClassNotFoundException e) {
+                throw new SomethingWentWrong("Something went wrong!");
             }
         }
         return userService;
     }
 
     @Override
-    public boolean createUser(User user) throws EmailExists, UserNameExists {
-        try {
-            List<User> users = userDao.getAllUser();
-            for (User u : users) {
-                if (u.getUserName().equals(user.getUserName())) {
-                    throw new EmailExists("Email already exists!");
-                } else if (u.getEmail().equals(user.getEmail())) {
-                    throw new UserNameExists("Email already exists!");
-                }
+    public boolean createUser(User user) throws EmailExists, UserNameExists, SomethingWentWrong {
+        for (User u : users) {
+            if (u.getUserName().equals(user.getUserName())) {
+                throw new UserNameExists("UserName taken!");
+
+            } else if (u.getEmail().equals(user.getEmail())) {
+                throw new EmailExists("Email already exists!");
+
             }
+        }
+        try {
+            userDao.createUser(user);
             users.add(user);
-            System.out.println("User created");
-            new Thread(() ->  {
-                try {
-                    userDao.createUser(user);
-                } catch (SQLException | ClassNotFoundException e) {
-                    e.printStackTrace();
-                }
-            }).start();
             return true;
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
-            return false;
+            throw new SomethingWentWrong("Something went wrong!");
         }
     }
 
     @Override
     public User getUser(User user) throws UserDoesntExist, InvalidCredentials {
-        try {
-            List<User> users = userDao.getAllUser();
-            for (User u : users) {
-                if (u.getUserName().equals(user.getUserName())) {
-                    if (u.getPassword().equals(user.getPassword())) {
-                        return u;
-                    } else {
-                        throw new InvalidCredentials("Wrong password!");
-                    }
+        for (User u : users) {
+            if (u.getUserName().equals(user.getUserName())) {
+                if (u.getPassword().equals(user.getPassword())) {
+                    return u;
+                } else {
+                    throw new InvalidCredentials("Wrong password!");
                 }
             }
-            throw new UserDoesntExist("User Doesn't Exist!");
-
-        } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace();
-            return null;
         }
+        throw new UserDoesntExist("User Doesn't Exist!");
     }
 }
