@@ -18,7 +18,7 @@ public class ServiceFactoryImpl implements ServiceFactory {
     }
 
     @Override
-    public UserService getUserService() {
+    public UserService getUserService() throws SomethingWentWrong {
         if (userService == null) {
             userService = UserServiceImpl.getInstance();
         }
