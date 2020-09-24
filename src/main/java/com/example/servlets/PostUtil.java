@@ -4,7 +4,6 @@ import com.example.beans.Post;
 import com.example.exceptions.SomethingWentWrong;
 import com.example.services.PostService;
 import com.example.services.ServiceFactoryImpl;
-import javafx.geometry.Pos;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
