@@ -20,9 +20,6 @@ public class PostServiceImpl implements PostService {
     private PostServiceImpl() throws SQLException, ClassNotFoundException {
         posts = postDao.getAllPost();
         posts = new ArrayList<>();
-        for (int i = 0; i < 34; i++) {
-            posts.add(new Post(i, "alfan", "alan123", "title" + i, "tag" + i, "a" + i, LocalDateTime.now()));
-        }
     }
 
     public static PostService getInstance() throws SomethingWentWrong {
@@ -58,10 +55,10 @@ public class PostServiceImpl implements PostService {
     @Override
     public boolean savePost(Post post) {
         posts.add(post);
-        System.out.println("Post added");
         new Thread(() -> {
             try {
                 postDao.savePost(post);
+                System.out.println("Post added");
             } catch (SQLException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
