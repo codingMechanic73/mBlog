@@ -10,6 +10,8 @@ import java.sql.SQLException;
 public class DatabaseConnection {
     private static Connection con;
     private static DatabaseConnection db;
+
+
     private DatabaseConnection() {
     }
 
@@ -19,25 +21,26 @@ public class DatabaseConnection {
         }
         return db;
     }
+
     public Connection getConnection() throws ClassNotFoundException, SQLException {
 
         if (con == null) {
-
-            // heroku provides an easier way to access driver, url, user, password
-            // from the environment variables
-            Class.forName(System.getenv("driver"));
-            con = DriverManager.getConnection(
-                    System.getenv("url"),
-                    System.getenv("user"),
-                    System.getenv("password"));
-            System.out.println(con);
-//            Class.forName("com.mysql.cj.jdbc.Driver");
-//            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/student_management_database", "root", "root");
-//            System.out.println(con);
-            //  return con;
-
+            con = getOnlineConnection();
         }
         return con;
+    }
+
+    public Connection getLocalConnection() throws ClassNotFoundException, SQLException {
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        return DriverManager.getConnection("jdbc:mysql://localhost:3306/student_management_database", "root", "root");
+    }
+
+    public Connection getOnlineConnection() throws ClassNotFoundException, SQLException {
+        Class.forName(System.getenv("driver"));
+        return DriverManager.getConnection(
+                System.getenv("url"),
+                System.getenv("user"),
+                System.getenv("password"));
     }
 
 

@@ -22,29 +22,6 @@ public class PostDaoImpl implements PostDao {
         return postDao;
     }
 
-    @Override
-    public List<Post> getPostsByEmailId(String userName) throws SQLException, ClassNotFoundException {
-        return new ArrayList<>();
-    }
-
-    @Override
-    public Post getPostByTag(String tag) throws SQLException, ClassNotFoundException {
-        Connection connection = DatabaseConnection.getInstance().getConnection();
-        Statement statement = connection.createStatement();
-        String query = "SELECT postId, postBy, title, tag, description, timestamp from mblog.Post where tag = \"" + tag + "\";";
-        ResultSet rs = statement.executeQuery(query);
-        Post post = null;
-        while (rs.next()) {
-            post = new Post();
-            post.setPostId(rs.getInt("postId"));
-            post.setUserName(rs.getString("postBy"));
-            post.setTitle(rs.getString("title"));
-            post.setTag(rs.getString("tag"));
-            post.setDescription(rs.getString("description"));
-            post.setTimestamp(LocalDateTime.now());
-        }
-        return post;
-    }
 
     @Override
     public int savePost(Post post) throws SQLException, ClassNotFoundException {

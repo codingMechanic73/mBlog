@@ -20,7 +20,11 @@ public class UserServlet extends HttpServlet {
 
     @Override
     public void init() {
-        userService = ServiceFactoryImpl.getInstance().getUserService();
+        try {
+            userService = ServiceFactoryImpl.getInstance().getUserService();
+        } catch (SomethingWentWrong somethingWentWrong) {
+            somethingWentWrong.printStackTrace();
+        }
     }
 
     @Override
@@ -28,7 +32,7 @@ public class UserServlet extends HttpServlet {
         HttpSession session = req.getSession();
 
         if (session.getAttribute("userName") != null) {
-            resp.sendRedirect("/Home.jsp");
+            resp.sendRedirect("/home?page=1");
         } else {
             String userName = req.getParameter("userName");
             String password = req.getParameter("password");
@@ -38,13 +42,13 @@ public class UserServlet extends HttpServlet {
                 try {
                     userService.getUser(new User(userName, "", password));
                     session.setAttribute("userName", userName);
-                    resp.sendRedirect("/Home.jsp");
+                    resp.sendRedirect("/home");
                 } catch (UserDoesntExist userDoesntExist) {
                     req.setAttribute("errorMsg", "User Doesn't Exist!");
-                    req.getRequestDispatcher("/index.jsp").forward(req, resp);
+                    req.getRequestDispatcher("/LandingPage.jsp").forward(req, resp);
                 } catch (InvalidCredentials invalidCredentials) {
                     req.setAttribute("errorMsg", "Invalid credentials!");
-                    req.getRequestDispatcher("/index.jsp").forward(req, resp);
+                    req.getRequestDispatcher("/LandingPage.jsp").forward(req, resp);
                 }
 
             } else if (button.equals("Sign Up")) {
@@ -52,9 +56,9 @@ public class UserServlet extends HttpServlet {
                 String repeatPassword = req.getParameter("passwordrepeat");
                 if (password.equals(repeatPassword)) {
                     try {
-                        userService.createUser(new User(userName, password, email));
+                        userService.createUser(new User(userName, email, password));
                         session.setAttribute("userName", userName);
-                        resp.sendRedirect("/Home.jsp");
+                        resp.sendRedirect("/home");
                     } catch (EmailExists | UserNameExists | SomethingWentWrong e) {
                         req.setAttribute("errorMsg", e.getMessage());
                         req.getRequestDispatcher("/SignUp.jsp").forward(req, resp);

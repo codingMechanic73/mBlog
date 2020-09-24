@@ -6,5 +6,5 @@
     response.setDateHeader("Expires", 0);
 
     session.invalidate();
-    response.sendRedirect("/index.jsp");
+    response.sendRedirect("/");
 %>

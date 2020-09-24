@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
+
 <%
     /*If user tries to click on browser back button then he/ she should not be able to access this page*/
     response.setHeader("Cache-Control", "no-cache");
@@ -8,10 +9,11 @@
     response.setDateHeader("Expires", 0);
 
    String userName = (String)session.getAttribute("userName");
-   if (userName == null) {
-       response.sendRedirect("/");
+   if (userName != null) {
+       response.sendRedirect("/home");
    }
 %>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -28,7 +30,7 @@
 </head>
 
 <body>
-    <jsp:include page="/Nav.jsp"/>
+    <jsp:include page="/NavLogin.jsp"/>
     <jsp:include page="/View.jsp"/>
 
 </body>

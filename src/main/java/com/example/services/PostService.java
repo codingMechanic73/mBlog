@@ -1,16 +1,18 @@
 package com.example.services;
 
 import com.example.beans.Post;
+import com.example.exceptions.SomethingWentWrong;
 
 import java.util.List;
 
 public interface PostService {
-    List<Post> getAllPost();
+
+    boolean savePost(Post post);
 
     List<Post> getPostByUserName(String userName);
 
-    List<Post> getPostBasedOnSearch(String str);
+    List<Post> getAllPost();
 
-    boolean savePost(Post post);
+    List<Post> getPostByTag(String str);
 
 }

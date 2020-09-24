@@ -9,7 +9,7 @@
 
     String userName = (String)session.getAttribute("userName");
     if (userName != null) {
-        response.sendRedirect("/Home.jsp");
+        response.sendRedirect("/home");
     }
 %>
 

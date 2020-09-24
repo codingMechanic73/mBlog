@@ -12,12 +12,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.sql.SQLException;
-import java.time.LocalDateTime;
+import java.util.List;
 
-@WebServlet(value = "/post")
-public class PostServlet extends HttpServlet {
-
+@WebServlet("/")
+public class IndexServlet extends HttpServlet {
     PostService postService;
 
     @Override
@@ -32,27 +30,16 @@ public class PostServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
         String userName = (String) session.getAttribute("userName");
+        List<Post> posts = postService.getAllPost();
+        req.setAttribute("posts", posts);
         if (userName == null) {
-            resp.sendRedirect("/LandingPage.jsp");
+            req.setAttribute("search", "");
+            req.getRequestDispatcher("/LandingPage.jsp").forward(req, resp);
         } else {
-            Post post = new Post(
-                    1,
-                    null,
-                    userName,
-                    req.getParameter("title"),
-                    req.getParameter("tag"),
-                    req.getParameter("description"),
-                    LocalDateTime.now());
-            if (postService.savePost(post)) {
-                req.setAttribute("posts", postService.getAllPost());
-                resp.sendRedirect("/myPost");
-            } else {
-                req.setAttribute("errorMsg", "Something went wrong!");
-                req.getRequestDispatcher("/AddPost.jsp").forward(req, resp);
-            }
+            resp.sendRedirect("/home");
         }
     }
 }

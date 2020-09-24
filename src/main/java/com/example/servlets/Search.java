@@ -12,12 +12,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.sql.SQLException;
-import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
-@WebServlet(value = "/post")
-public class PostServlet extends HttpServlet {
+@WebServlet("/search")
 
+public class Search extends HttpServlet {
     PostService postService;
 
     @Override
@@ -32,27 +32,24 @@ public class PostServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
         String userName = (String) session.getAttribute("userName");
         if (userName == null) {
             resp.sendRedirect("/LandingPage.jsp");
         } else {
-            Post post = new Post(
-                    1,
-                    null,
-                    userName,
-                    req.getParameter("title"),
-                    req.getParameter("tag"),
-                    req.getParameter("description"),
-                    LocalDateTime.now());
-            if (postService.savePost(post)) {
-                req.setAttribute("posts", postService.getAllPost());
-                resp.sendRedirect("/myPost");
-            } else {
-                req.setAttribute("errorMsg", "Something went wrong!");
-                req.getRequestDispatcher("/AddPost.jsp").forward(req, resp);
+
+            List<Post> posts = new ArrayList<>();
+            String query = req.getParameter("query");
+            if (query != null && query.startsWith("#")) {
+                posts = postService.getPostByTag(query.substring(1));
+            } else if (query != null && query.startsWith("@")) {
+                posts = postService.getPostByUserName(query.substring(1));
             }
+            req.setAttribute("posts", posts);
+            req.setAttribute("search","&query="+query);
+            req.getRequestDispatcher("Search.jsp").forward(req, resp);
+
         }
     }
 }

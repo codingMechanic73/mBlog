@@ -1,8 +1,10 @@
 package com.example.servlets;
 
 import com.example.beans.Post;
+import com.example.exceptions.SomethingWentWrong;
 import com.example.services.PostService;
 import com.example.services.ServiceFactoryImpl;
+import javafx.geometry.Pos;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,39 +14,43 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet("/postUtil")
 public class PostUtil extends HttpServlet {
 
     PostService postService;
+
     @Override
-    public void init() throws ServletException {
+    public void init() {
+
         try {
             postService = ServiceFactoryImpl.getInstance().getPostService();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+        } catch (SomethingWentWrong somethingWentWrong) {
+            somethingWentWrong.printStackTrace();
         }
+
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
-        String email = (String) session.getAttribute("email");
-        if (email == null) {
-            resp.sendRedirect("/index.jsp");
+        String userName = (String) session.getAttribute("userName");
+        if (userName == null) {
+            resp.sendRedirect("/LandingPage.jsp");
         } else {
-            String button = (String) "button";
-            switch (button) {
-                case "button":
-                    String searchEmail = (String) req.getAttribute("searchEmail");
-                    List<Post> posts = postService.getPostByUserName(searchEmail);
-                    req.setAttribute("posts", posts);
-                    req.setAttribute("from", "filter");
-                    req.getRequestDispatcher("/Search.jsp").forward(req, resp);
-                    break;
+            String button = req.getParameter("button");
+            if (button.equals("search")) {
+                List<Post> posts = new ArrayList<>();
+                String query = req.getParameter("query");
+                if (query != null && query.startsWith("#")) {
+                    posts = postService.getPostByTag(query.substring(1));
+                } else if (query != null && query.startsWith("@")) {
+                    posts = postService.getPostByUserName(query.substring(1));
+                }
+                req.setAttribute("posts", posts);
+                req.getRequestDispatcher("Search.jsp").forward(req, resp);
             }
         }
     }

@@ -1,12 +1,12 @@
 package com.example.listeners;
 
+import com.example.exceptions.SomethingWentWrong;
 import com.example.services.ServiceFactory;
 import com.example.services.ServiceFactoryImpl;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
-import java.sql.SQLException;
 
 @WebListener()
 public class InitServices implements ServletContextListener {
@@ -17,11 +17,8 @@ public class InitServices implements ServletContextListener {
             factory.getPostService();
             factory.getUserService();
             System.out.println("Services Initialized");
-
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+        } catch (SomethingWentWrong s) {
+            System.out.println(s.getMessage());
         }
     }
 

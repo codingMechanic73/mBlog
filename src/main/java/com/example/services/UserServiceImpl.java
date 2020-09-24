@@ -6,6 +6,7 @@ import com.example.beans.User;
 import com.example.exceptions.*;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserServiceImpl implements UserService {
@@ -56,6 +57,8 @@ public class UserServiceImpl implements UserService {
     public User getUser(User user) throws UserDoesntExist, InvalidCredentials {
         for (User u : users) {
             if (u.getUserName().equals(user.getUserName())) {
+                System.out.println(u.getPassword());
+                System.out.println(user.getPassword());
                 if (u.getPassword().equals(user.getPassword())) {
                     return u;
                 } else {

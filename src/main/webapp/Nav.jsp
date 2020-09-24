@@ -1,10 +1,8 @@
-<%
-    String userName = (String)session.getAttribute("userName");
-%>
+<% String userName = (String)session.getAttribute("userName"); %>
 
 <div style="margin-bottom: 50px">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="/Home.jsp">Home</a>
+        <a class="navbar-brand" href="/">Home</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -16,8 +14,8 @@
             </ul>
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <form class="form-inline my-2 my-lg-0" action="/Search.jsp" method="POST">
-                        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                    <form class="form-inline my-2 my-lg-0" action="/search" method="GET">
+                        <input class="form-control mr-sm-2" type="search" placeholder="Search" required aria-label="Search" name="query">
                         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
                     </form>
                 </li>
@@ -25,7 +23,7 @@
                     <a class="nav-link" href="/AddPost.jsp">Add Post <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">My Posts</a>
+                    <a class="nav-link" href="/myPost">My Posts</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
