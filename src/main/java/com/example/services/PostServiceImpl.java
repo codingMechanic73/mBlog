@@ -6,8 +6,6 @@ import com.example.beans.Post;
 import com.example.exceptions.SomethingWentWrong;
 
 import java.sql.SQLException;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,16 +15,17 @@ public class PostServiceImpl implements PostService {
 
     private static List<Post> posts;
 
-    private PostServiceImpl() throws SQLException, ClassNotFoundException {
-        posts = postDao.getAllPost();
-        posts = new ArrayList<>();
+    private PostServiceImpl() {
+
     }
 
     public static PostService getInstance() throws SomethingWentWrong {
         if (postService == null) {
+
             postDao = DaoFactoryImpl.getInstance().getPostDao();
             try {
                 postService = new PostServiceImpl();
+                posts = postDao.getAllPost();
             } catch (SQLException | ClassNotFoundException throwables) {
                 throwables.printStackTrace();
                 throw new SomethingWentWrong("Something went wrong!");
@@ -47,6 +46,37 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public void deletePost(int postId, String userName) {
+
+        for (Post post : posts) {
+            if (post.getPostId() == postId && post.getUserName().equals(userName)) {
+
+                new Thread(() -> {
+                    try {
+                        postDao.deletePost(postId);
+                    } catch (SQLException | ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                }).start();
+                posts.remove(post);
+                break;
+            }
+        }
+
+
+    }
+
+    @Override
+    public Integer getMaxId() {
+        try {
+            return postDao.getMaxId();
+        } catch (SQLException | ClassNotFoundException throwables) {
+            throwables.printStackTrace();
+        }
+        return -1;
+    }
+
+    @Override
     public List<Post> getPostByUserName(String email) {
         return posts.stream().filter(post -> post.getUserName().equals(email)).collect(Collectors.toList());
     }
@@ -58,7 +88,6 @@ public class PostServiceImpl implements PostService {
         new Thread(() -> {
             try {
                 postDao.savePost(post);
-                System.out.println("Post added");
             } catch (SQLException | ClassNotFoundException e) {
                 e.printStackTrace();
             }

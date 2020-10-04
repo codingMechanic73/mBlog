@@ -31,8 +31,8 @@ public class DatabaseConnection {
     }
 
     public Connection getLocalConnection() throws ClassNotFoundException, SQLException {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        return DriverManager.getConnection("jdbc:mysql://localhost:3306/student_management_database", "root", "root");
+        Class.forName("org.postgresql.Driver");
+        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/databaseName", "userName", "password");
     }
 
     public Connection getOnlineConnection() throws ClassNotFoundException, SQLException {

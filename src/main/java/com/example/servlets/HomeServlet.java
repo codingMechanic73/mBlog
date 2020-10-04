@@ -1,6 +1,7 @@
 package com.example.servlets;
 
 import com.example.beans.Post;
+import com.example.beans.User;
 import com.example.exceptions.SomethingWentWrong;
 import com.example.services.PostService;
 import com.example.services.ServiceFactoryImpl;
@@ -12,7 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet(value = "/home")
@@ -33,15 +33,15 @@ public class HomeServlet extends HttpServlet {
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
-        String userName = (String) session.getAttribute("userName");
-        List<Post> posts = postService.getAllPost();
-
-        req.setAttribute("posts", posts);
-        if (userName == null) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
             resp.sendRedirect("/");
         } else {
+            List<Post> posts = postService.getAllPost();
+            req.setAttribute("posts", posts);
+            req.setAttribute("url", "home");
             req.setAttribute("search", "");
-            req.getRequestDispatcher("/Home.jsp").forward(req, resp);
+            req.getRequestDispatcher("/Display.jsp").forward(req, resp);
         }
     }
 }

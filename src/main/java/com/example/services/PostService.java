@@ -15,4 +15,8 @@ public interface PostService {
 
     List<Post> getPostByTag(String str);
 
+    void deletePost(int PostId, String userName) throws SomethingWentWrong;
+
+    Integer getMaxId();
+
 }

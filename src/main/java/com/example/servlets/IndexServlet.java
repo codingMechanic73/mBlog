@@ -1,6 +1,7 @@
 package com.example.servlets;
 
 import com.example.beans.Post;
+import com.example.beans.User;
 import com.example.exceptions.SomethingWentWrong;
 import com.example.services.PostService;
 import com.example.services.ServiceFactoryImpl;
@@ -32,11 +33,13 @@ public class IndexServlet extends HttpServlet {
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
-        String userName = (String) session.getAttribute("userName");
-        List<Post> posts = postService.getAllPost();
-        req.setAttribute("posts", posts);
-        if (userName == null) {
+        User user = (User) session.getAttribute("user");
+
+        if (user == null) {
+            List<Post> posts = postService.getAllPost();
+            req.setAttribute("posts", posts);
             req.setAttribute("search", "");
+            req.setAttribute("url", "");
             req.getRequestDispatcher("/LandingPage.jsp").forward(req, resp);
         } else {
             resp.sendRedirect("/home");

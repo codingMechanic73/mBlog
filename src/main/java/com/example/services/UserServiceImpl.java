@@ -6,7 +6,6 @@ import com.example.beans.User;
 import com.example.exceptions.*;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class UserServiceImpl implements UserService {
@@ -15,15 +14,16 @@ public class UserServiceImpl implements UserService {
     private static UserService userService;
     private static List<User> users;
 
-    private UserServiceImpl() throws SQLException, ClassNotFoundException {
-        userDao = DaoFactoryImpl.getInstance().getUserDao();
-        users = userDao.getAllUser();
+    private UserServiceImpl() {
+
     }
 
 
     public static UserService getInstance() throws SomethingWentWrong {
         if (userService == null) {
+            userDao = DaoFactoryImpl.getInstance().getUserDao();
             try {
+                users = userDao.getAllUser();
                 userService = new UserServiceImpl();
             } catch (SQLException | ClassNotFoundException e) {
                 throw new SomethingWentWrong("Something went wrong!");
@@ -57,8 +57,6 @@ public class UserServiceImpl implements UserService {
     public User getUser(User user) throws UserDoesntExist, InvalidCredentials {
         for (User u : users) {
             if (u.getUserName().equals(user.getUserName())) {
-                System.out.println(u.getPassword());
-                System.out.println(user.getPassword());
                 if (u.getPassword().equals(user.getPassword())) {
                     return u;
                 } else {

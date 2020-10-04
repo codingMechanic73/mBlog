@@ -1,7 +1,9 @@
 package com.example.servlets;
 
+import com.example.beans.Post;
 import com.example.beans.User;
 import com.example.exceptions.*;
+import com.example.services.PostService;
 import com.example.services.ServiceFactoryImpl;
 import com.example.services.UserService;
 
@@ -12,16 +14,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.List;
 
 @WebServlet(value = "/user")
 public class UserServlet extends HttpServlet {
 
     UserService userService;
+    PostService postService;
 
     @Override
     public void init() {
+
         try {
             userService = ServiceFactoryImpl.getInstance().getUserService();
+            postService = ServiceFactoryImpl.getInstance().getPostService();
         } catch (SomethingWentWrong somethingWentWrong) {
             somethingWentWrong.printStackTrace();
         }
@@ -32,16 +38,18 @@ public class UserServlet extends HttpServlet {
         HttpSession session = req.getSession();
 
         if (session.getAttribute("userName") != null) {
-            resp.sendRedirect("/home?page=1");
+            resp.sendRedirect("/home");
         } else {
             String userName = req.getParameter("userName");
             String password = req.getParameter("password");
             String button = req.getParameter("button");
 
             if (button.equals("Sign In")) {
+                List<Post> posts = postService.getAllPost();
+                req.setAttribute("posts", posts);
                 try {
-                    userService.getUser(new User(userName, "", password));
-                    session.setAttribute("userName", userName);
+                    User user = userService.getUser(new User(userName, "", password));
+                    session.setAttribute("user", user);
                     resp.sendRedirect("/home");
                 } catch (UserDoesntExist userDoesntExist) {
                     req.setAttribute("errorMsg", "User Doesn't Exist!");
@@ -56,8 +64,9 @@ public class UserServlet extends HttpServlet {
                 String repeatPassword = req.getParameter("passwordrepeat");
                 if (password.equals(repeatPassword)) {
                     try {
-                        userService.createUser(new User(userName, email, password));
-                        session.setAttribute("userName", userName);
+                        User user = new User(userName, email, password);
+                        userService.createUser(user);
+                        session.setAttribute("user", user);
                         resp.sendRedirect("/home");
                     } catch (EmailExists | UserNameExists | SomethingWentWrong e) {
                         req.setAttribute("errorMsg", e.getMessage());

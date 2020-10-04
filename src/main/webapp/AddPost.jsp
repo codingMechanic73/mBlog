@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="com.example.beans.User" %>
 
 <%
     /*If user tries to click on browser back button then he/ she should not be able to access this page*/
@@ -7,10 +8,10 @@
     response.setHeader("Pragma", "no-cache");
     response.setDateHeader("Expires", 0);
 
-    String userName = (String)session.getAttribute("userName");
-    if (userName == null) {
-        response.sendRedirect("/index.jsp");
-    }
+    User user = (User)session.getAttribute("user");
+    if (user == null) {
+        response.sendRedirect("/");
+    } else {
 %>
 
 <!DOCTYPE html>
@@ -22,12 +23,12 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign In or Sign Up</title>
+    <title>Add Post</title>
 </head>
 <body>
     <jsp:include page="Nav.jsp"/>
 
-    <div class="container" style="margin-top: 50px">
+    <div class="container" style="margin-top: 20px">
         <div class="row justify-content-center">
             <div class="col-10 col-sm-8 col-md-6 col-lg-5 .col-xl-4">
                 <form action="/post" method="POST">
@@ -38,12 +39,20 @@
 
                     <div class="form-group">
                         <label for="exampleFormControlTextarea1">Description</label>
-                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="6" name="description" maxlength="1000" minlength="15"></textarea>
+                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="4" name="description" maxlength="1000" minlength="15"></textarea>
                     </div>
                     <div class="form-group">
                         <label for="exampleFormControlInput1">Tags</label>
                         <input type="text" class="form-control" id="exampleFormControlInput1"
-                            placeholder="java, cloud technology" name="tag" maxlength = "20" >
+                            placeholder="java" name="tag" maxlength = "20" >
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleFormControlInput2">Image Url</label>
+                        <input type="text" class="form-control" id="exampleFormControlInput2"
+                            placeholder="https://wallpapercave.com/wp/SHkdY7B.jpg" name="imgUrl" maxlength = "200" >
+                             <div class="alert alert-warning" role="alert" style="margin-top: 25px;">
+                               Only admin is allowed to post pictures
+                            </div>
                     </div>
 
                     <input type="submit" class="btn btn-primary btn-lg btn-block" value="Post" />
@@ -63,3 +72,5 @@
     </div>
 </body>
 </html>
+
+<% } %>

@@ -1,6 +1,5 @@
 package com.example.Dao;
 
-import java.sql.SQLException;
 
 public class DaoFactoryImpl implements DaoFactory {
 

@@ -34,11 +34,7 @@
             <version>42.2.16</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.21</version>
-        </dependency>
+
 
 
     </dependencies>
@@ -77,6 +73,8 @@
                     <target>8</target>
                 </configuration>
             </plugin>
+
+
         </plugins>
     </build>
 </project>

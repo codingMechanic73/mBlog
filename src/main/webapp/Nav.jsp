@@ -1,4 +1,8 @@
-<% String userName = (String)session.getAttribute("userName"); %>
+<%@ page import="com.example.beans.User" %>
+
+<% User user = (User)session.getAttribute("user");
+
+ if (user != null) {%>
 
 <div style="margin-bottom: 50px">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -15,7 +19,7 @@
             <ul class="navbar-nav">
                 <li class="nav-item">
                     <form class="form-inline my-2 my-lg-0" action="/search" method="GET">
-                        <input class="form-control mr-sm-2" type="search" placeholder="Search" required aria-label="Search" name="query">
+                        <input class="form-control mr-sm-2" type="search" placeholder="@userName, #tag" required aria-label="Search" name="query" minLength="4" maxLength="20">
                         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
                     </form>
                 </li>
@@ -28,7 +32,7 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <%=userName %>
+                        <%=user.getUserName() %>
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="Logout.jsp">Logout</a>
@@ -47,3 +51,5 @@
         integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
         crossorigin="anonymous"></script>
 </div>
+
+<% } %>

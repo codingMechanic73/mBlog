@@ -1,7 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="java.util.*, com.example.beans.Post" %>
+<%@ page import="java.util.*, com.example.beans.Post, com.example.beans.User" %>
 <div class="container">
-<%
+<%  String url=(String)request.getAttribute("url");
+    String userName = "";
+    User user=(User)session.getAttribute("user");
+    if (user != null) {userName = user.getUserName();}
+
     List<Post> posts = (List<Post>) request.getAttribute("posts");
     if (posts == null || posts.size() == 0) {
     %>
@@ -39,17 +43,33 @@
             post = posts.get(i);
         %>
         <div class="card">
-            <img src="https://wallpapercave.com/wp/SHkdY7B.jpg" class="card-img-top" alt="...">
+            <% if (post.getImgUrl() != null && !post.getImgUrl().equals("")) {
+            out.print("<img src=\""+post.getImgUrl()+"\" class=\"card-img-top\" alt=\"...\">");
+             }%>
+
             <div class="card-body">
                 <h5 class="card-title"><%=post.getTitle()%></h5>
                 <p class="card-text"><%=post.getDescription()%></p>
             </div>
             <div class="card-footer">
-                <small class="text-muted"><%=post.getTimestamp()%></small>
+                 <i> Post By:
+                 <%=post.getUserName()%>
+                 </i>
+                 <small class="text-muted"><%=post.getTimestamp()%></small>
+                  <%if(post.getUserName().equals(userName)){
+                      %>
+
+                 <% out.print("<a href=\"delete?url="+url+"&postId="+post.getPostId()+"\">Delete</a>"); %>
+                         <%
+                      }
+                      %>
             </div>
+
         </div>
-        <% }
+        <%
         }
+        }
+
         %>
     </div>
 </div>
