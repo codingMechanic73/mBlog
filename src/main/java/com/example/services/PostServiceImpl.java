@@ -6,6 +6,7 @@ import com.example.beans.Post;
 import com.example.exceptions.SomethingWentWrong;
 
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,6 +27,7 @@ public class PostServiceImpl implements PostService {
             try {
                 postService = new PostServiceImpl();
                 posts = postDao.getAllPost();
+                Collections.reverse(posts);
             } catch (SQLException | ClassNotFoundException throwables) {
                 throwables.printStackTrace();
                 throw new SomethingWentWrong("Something went wrong!");
@@ -36,7 +38,6 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public List<Post> getAllPost() {
-
         return posts;
     }
 
@@ -84,7 +85,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public boolean savePost(Post post) {
-        posts.add(post);
+        posts.add(0,post);
         new Thread(() -> {
             try {
                 postDao.savePost(post);
