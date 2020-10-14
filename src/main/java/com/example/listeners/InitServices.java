@@ -1,12 +1,13 @@
 package com.example.listeners;
 
+import com.example.exceptions.SomethingWentWrong;
 import com.example.services.ServiceFactory;
 import com.example.services.ServiceFactoryImpl;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
-import java.sql.SQLException;
 
 @WebListener()
 public class InitServices implements ServletContextListener {
@@ -14,13 +15,15 @@ public class InitServices implements ServletContextListener {
     public void contextInitialized(ServletContextEvent sce) {
         try {
             ServiceFactory factory = ServiceFactoryImpl.getInstance();
-            factory.getPostService();
+            Integer count = factory.getPostService().getMaxId();
             factory.getUserService();
-            System.out.println("Services Initialized");
+            ServletContext sc = sce.getServletContext();
+            System.out.println("********LISTENER********");
+            System.out.println("Post and User Services Initialized");
+            sc.setAttribute("maxId", count);
+            System.out.println("Max id fetched:" + count);
 
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        } catch (SomethingWentWrong e) {
             e.printStackTrace();
         }
     }

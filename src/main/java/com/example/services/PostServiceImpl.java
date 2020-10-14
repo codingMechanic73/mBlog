@@ -3,9 +3,10 @@ package com.example.services;
 import com.example.Dao.DaoFactoryImpl;
 import com.example.Dao.PostDao;
 import com.example.beans.Post;
+import com.example.exceptions.SomethingWentWrong;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -13,21 +14,23 @@ public class PostServiceImpl implements PostService {
     public static PostService postService;
     private static PostDao postDao;
 
-    private static List<Post> posts = new ArrayList<>();
+    private static List<Post> posts;
 
-    private PostServiceImpl() throws SQLException, ClassNotFoundException {
-        posts = postDao.getAllPost();
+    private PostServiceImpl() {
+
     }
 
-    public static PostService getInstance() {
+    public static PostService getInstance() throws SomethingWentWrong {
         if (postService == null) {
+
             postDao = DaoFactoryImpl.getInstance().getPostDao();
             try {
                 postService = new PostServiceImpl();
-            } catch (SQLException throwables) {
+                posts = postDao.getAllPost();
+                Collections.reverse(posts);
+            } catch (SQLException | ClassNotFoundException throwables) {
                 throwables.printStackTrace();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
+                throw new SomethingWentWrong("Something went wrong!");
             }
         }
         return postService;
@@ -39,20 +42,51 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public List<Post> getPostByTag(String str) {
+        return posts.stream().filter(post -> post.getTag().equals(str)).collect(Collectors.toList());
+    }
+
+    @Override
+    public void deletePost(int postId, String userName) {
+
+        for (Post post : posts) {
+            if (post.getPostId() == postId && post.getUserName().equals(userName)) {
+
+                new Thread(() -> {
+                    try {
+                        postDao.deletePost(postId);
+                    } catch (SQLException | ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                }).start();
+                posts.remove(post);
+                break;
+            }
+        }
+
+
+    }
+
+    @Override
+    public Integer getMaxId() {
+        try {
+            return postDao.getMaxId();
+        } catch (SQLException | ClassNotFoundException throwables) {
+            throwables.printStackTrace();
+        }
+        return -1;
+    }
+
+    @Override
     public List<Post> getPostByUserName(String email) {
         return posts.stream().filter(post -> post.getUserName().equals(email)).collect(Collectors.toList());
     }
 
-    @Override
-    public List<Post> getPostBasedOnSearch(String str) {
-        return posts.stream().filter(post -> post.getTitle().contains(str)).collect(Collectors.toList());
-    }
 
     @Override
     public boolean savePost(Post post) {
-        posts.add(post);
-        System.out.println("Post added");
-        new Thread(() ->  {
+        posts.add(0,post);
+        new Thread(() -> {
             try {
                 postDao.savePost(post);
             } catch (SQLException | ClassNotFoundException e) {

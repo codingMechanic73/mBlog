@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="com.example.beans.User" %>
 
 <%
     /*If user tries to click on browser back button then he/ she should not be able to access this page*/
@@ -7,9 +8,9 @@
     response.setHeader("Pragma", "no-cache");
     response.setDateHeader("Expires", 0);
 
-    String userName = (String)session.getAttribute("userName");
-    if (userName != null) {
-        response.sendRedirect("/Home.jsp");
+    User user = (User)session.getAttribute("user");
+    if (user != null) {
+        response.sendRedirect("/home");
     }
 %>
 
@@ -39,7 +40,7 @@
                     </div>
                     <div class="form-group">
                         <label for="email">Email address</label>
-                        <input type="email" class="form-control" name="email" placeholder="email" required>
+                        <input type="email" class="form-control" name="email" placeholder="email" maxLength="30" required>
                     </div>
 
                     <div class="form-group">
@@ -47,7 +48,7 @@
                         <input type="password" class="form-control" name="password" placeholder="**********" required minlength="8" maxlength="15">
                     </div> <div class="form-group">
                         <label for="passwordrepeat">Repeat Password</label>
-                        <input type="passwordrepeat" class="form-control" name="passwordrepeat" placeholder="**********" required minlength="8" maxlength="15">
+                        <input type="password" class="form-control" name="passwordrepeat" placeholder="**********" required minlength="8" maxlength="15">
                     </div>
                     <div class="form-group">
                         <div class="form-group">

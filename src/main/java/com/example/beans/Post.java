@@ -1,6 +1,5 @@
 package com.example.beans;
 
-import java.time.LocalDateTime;
 
 public class Post {
 
@@ -10,13 +9,13 @@ public class Post {
     private String title;
     private String tag;
     private String description;
-    private LocalDateTime timestamp;
+    private String timestamp;
 
     public Post() {
 
     }
 
-    public Post(int postId, String imgUrl, String userName, String title, String tag, String description, LocalDateTime timestamp) {
+    public Post(int postId, String imgUrl, String userName, String title, String tag, String description, String timestamp) {
         this.postId = postId;
         this.imgUrl = imgUrl;
         this.userName = userName;
@@ -27,7 +26,7 @@ public class Post {
     }
 
     public int getPostId() {
-        return postId;
+        return this.postId;
     }
 
     public void setPostId(int postId) {
@@ -74,11 +73,11 @@ public class Post {
         this.description = description;
     }
 
-    public LocalDateTime getTimestamp() {
+    public String getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(LocalDateTime timestamp) {
+    public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
     }
 }

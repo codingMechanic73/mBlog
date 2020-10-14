@@ -11,8 +11,6 @@ public class UserDaoImpl implements UserDao {
 
     private static UserDao userDao;
 
-    private static List<User> users;
-
     private UserDaoImpl() {
 
     }
@@ -28,10 +26,11 @@ public class UserDaoImpl implements UserDao {
     public List<User> getAllUser() throws SQLException, ClassNotFoundException {
         Connection connection = DatabaseConnection.getInstance().getConnection();
         Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery("select userName, email, password from mblog.user");
+        ResultSet resultSet = statement.executeQuery("select userName, email, password, userType from mblog.user");
         List<User> users = new ArrayList<>();
         while (resultSet.next()) {
             User user = new User(resultSet.getString("userName"), resultSet.getString("email"), resultSet.getString("password"));
+            user.setUserType(resultSet.getString("userType"));
             users.add(user);
         }
         return users;
@@ -40,10 +39,11 @@ public class UserDaoImpl implements UserDao {
     @Override
     public int createUser(User user) throws SQLException, ClassNotFoundException {
         Connection connection = DatabaseConnection.getInstance().getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO mblog.user(email, password, userName) values(?, ?, ?)");
+        PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO mblog.user(email, password, userName, userType) values(?, ?, ?, ?)");
         preparedStatement.setString(1, user.getEmail());
         preparedStatement.setString(2, user.getPassword());
         preparedStatement.setString(3, user.getUserName());
+        preparedStatement.setString(4, user.getUserType());
         return preparedStatement.executeUpdate();
     }
 

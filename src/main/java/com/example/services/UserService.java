@@ -1,13 +1,11 @@
 package com.example.services;
 
 import com.example.beans.User;
-import com.example.exceptions.EmailExists;
-import com.example.exceptions.InvalidCredentials;
-import com.example.exceptions.UserDoesntExist;
-import com.example.exceptions.UserNameExists;
+import com.example.exceptions.*;
+
 
 public interface UserService {
-    boolean createUser(User user) throws EmailExists, UserNameExists;
+    boolean createUser(User user) throws EmailExists, UserNameExists, SomethingWentWrong;
 
     User getUser(User user) throws UserDoesntExist, InvalidCredentials;
 }

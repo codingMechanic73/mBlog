@@ -6,6 +6,7 @@ public class User {
     private String userName;
     private String email;
     private String password;
+    private String userType;
 
     public User() {
     }
@@ -15,6 +16,15 @@ public class User {
         this.email = email;
         this.password = password;
         this.id = 1;
+        this.userType = "registeredUser";
+    }
+
+    public void setUserType(String userType) {
+        this.userType = userType;
+    }
+
+    public String getUserType() {
+        return userType;
     }
 
     public String getUserName() {

@@ -1,12 +1,13 @@
 package com.example.services;
 
 
-import java.sql.SQLException;
+import com.example.exceptions.SomethingWentWrong;
+
 
 public interface ServiceFactory {
 
-    UserService getUserService();
+    UserService getUserService() throws SomethingWentWrong;
 
-    PostService getPostService() throws SQLException, ClassNotFoundException;
+    PostService getPostService() throws SomethingWentWrong;
 
 }
